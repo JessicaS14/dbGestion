@@ -1,0 +1,73 @@
+-- MySQL Workbench Synchronization
+-- Generated: 2020-11-15 21:04
+-- Model: New Model
+-- Version: 1.0
+-- Project: Name of the project
+-- Author: jess7
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+CREATE SCHEMA IF NOT EXISTS `gestion` DEFAULT CHARACTER SET utf8 ;
+
+CREATE TABLE IF NOT EXISTS `gestion`.`ticket` (
+  `idTicket` INT(11) NOT NULL AUTO_INCREMENT,
+  `resumen` VARCHAR(45) NOT NULL,
+  `fechaCreacion` VARCHAR(45) NOT NULL,
+  `descripcion` VARCHAR(45) NULL DEFAULT NULL,
+  `prioridad_idPrioridad` INT(11) NOT NULL,
+  `estado_idEstado` INT(11) NOT NULL,
+  `responsable_idResponsable` INT(11) NOT NULL,
+  PRIMARY KEY (`idTicket`, `prioridad_idPrioridad`, `estado_idEstado`, `responsable_idResponsable`),
+  INDEX `fk_ticket_prioridad_idx` (`prioridad_idPrioridad` ASC) VISIBLE,
+  INDEX `fk_ticket_estado1_idx` (`estado_idEstado` ASC) VISIBLE,
+  INDEX `fk_ticket_responsable1_idx` (`responsable_idResponsable` ASC) VISIBLE,
+  CONSTRAINT `fk_ticket_prioridad`
+    FOREIGN KEY (`prioridad_idPrioridad`)
+    REFERENCES `gestion`.`prioridad` (`idPrioridad`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_ticket_estado1`
+    FOREIGN KEY (`estado_idEstado`)
+    REFERENCES `gestion`.`estado` (`idEstado`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_ticket_responsable1`
+    FOREIGN KEY (`responsable_idResponsable`)
+    REFERENCES `gestion`.`responsable` (`idResponsable`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `gestion`.`estado` (
+  `idEstado` INT(11) NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(45) NOT NULL,
+  `descripcion` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`idEstado`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `gestion`.`responsable` (
+  `idResponsable` INT(11) NOT NULL,
+  `nombre` VARCHAR(45) NOT NULL,
+  `cedula` VARCHAR(45) NOT NULL,
+  `correo` VARCHAR(45) NOT NULL,
+  `area` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`idResponsable`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `gestion`.`prioridad` (
+  `idPrioridad` INT(11) NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(45) NOT NULL,
+  `descripcion` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`idPrioridad`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
